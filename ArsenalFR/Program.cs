@@ -5,22 +5,17 @@ string attackString = "";
 int dmgTotal = 0;
 
 string textWeapon = File.ReadAllText("weapons.json");
+string textDummy = File.ReadAllText("dummy.json");
 
-Enemy dummy = new Enemy()
-{
-  name = "Dummy",
-  hitpoints = 100,
-};
-string jsonDummy = JsonSerializer.Serialize<Enemy>(dummy);
-File.WriteAllText("weapon.json", jsonDummy);
 
 Weapon scythe  = JsonSerializer.Deserialize<Weapon>(textWeapon);
+Enemy dummy = JsonSerializer.Deserialize<Enemy>(textDummy);
 
 Console.WriteLine("What is the name of your Dummy?");
 
-// tester.name = Console.ReadLine();
+dummy.name = Console.ReadLine();
 
-// Console.WriteLine($"Your dummy is named {tester.name}.");
+Console.WriteLine($"Your dummy is named {dummy.name}.");
 Console.WriteLine("How many attacks do you wish to perform?");
 
 
@@ -33,13 +28,15 @@ while (!int.TryParse(attackString, out numberOfAttacks))
 for (int i = 0; i < numberOfAttacks; i++)
 {
   int damage = scythe.attack();
-  Console.WriteLine($"{damage}");
+  dummy.hitpoints -= damage;
+  Console.WriteLine($"You dealt {damage} to {dummy.name}.");
+  Console.WriteLine($"{dummy.name} now has {dummy.hitpoints} HP.");
   dmgTotal += damage;
 }
  
 
 
-Console.WriteLine($"Scythe dealt a total of {dmgTotal} damage");
+Console.WriteLine($"Scythe dealt a total of {dmgTotal} damage to {dummy.name}");
 
 
 
@@ -57,3 +54,14 @@ Console.ReadLine();
 
 // string jsonWeapon = JsonSerializer.Serialize<Weapon>(scythe); 
 // File.WriteAllText("weapon.json", jsonWeapon
+
+
+// Enemy dummy = new()
+// {
+//   name = "Dummy",
+//   hitpoints = 100,
+// };
+// string jsonDummy = JsonSerializer.Serialize(dummy);
+// File.WriteAllText("dummy.json", jsonDummy);
+
+// Console.ReadLine();
